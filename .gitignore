@@ -1,0 +1,63 @@
+# Secrets / environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# Java / JVM
+target/
+*.class
+.gradle/
+
+# .NET
+bin/
+obj/
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+.local.properties
+captures/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Local databases / data dumps (remove this line if a small demo DB must be submitted)
+*.sqlite-journal
