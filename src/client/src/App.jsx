@@ -9,6 +9,8 @@ import QuizPage from './pages/QuizPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import BadgesPage from './pages/BadgesPage';
 import GemsPage from './pages/GemsPage';
+import ProfilePage from './pages/ProfilePage';
+import RewardsPage from './pages/RewardsPage';
 import AdminPage from './pages/AdminPage';
 import './App.css';
 

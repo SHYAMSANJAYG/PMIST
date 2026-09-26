@@ -81,4 +81,9 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ rewardId }),
     }),
+  redeemReward: (rewardId) =>
+    request('/rewards/redeem', {
+      method: 'POST',
+      body: JSON.stringify({ rewardId }),
+    }),
 };

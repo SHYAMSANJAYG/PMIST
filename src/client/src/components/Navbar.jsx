@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import { Trophy, LayoutDashboard, Swords, Medal, LogOut, Shield, Flame, Star, Gem } from 'lucide-react';
+import { Trophy, LayoutDashboard, Swords, Medal, LogOut, Shield, Flame, Star, Gem, ChevronDown, User } from 'lucide-react';
 import './Navbar.css';
 
 export default function Navbar() {
