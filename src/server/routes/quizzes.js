@@ -116,11 +116,27 @@ router.post('/submit', authenticateToken, (req, res) => {
       if (!question) continue;
 
       const isCorrect = resp.answer === question.correct_answer;
+      let pointsEarned = 0;
+      let confidencePenalty = 0;
+
       if (isCorrect) {
+        if (resp.confidence === 'high') {
+          pointsEarned = Math.floor(question.points * 1.5);
+        } else {
+          pointsEarned = question.points;
+        }
         correctCount++;
-        totalPoints += question.points;
+      } else {
+        if (resp.confidence === 'high') {
+          confidencePenalty = question.points; // Penalty for high confidence wrong answer
+        } else {
+          confidencePenalty = 0; // Low confidence wrong answer = min penalty
+        }
       }
-      maxPoints += question.points;
+
+      totalPoints += pointsEarned;
+      totalPoints -= confidencePenalty;
+      maxPoints += Math.floor(question.points * 1.5); // Adjusted max possible
 
       gradedResponses.push({
         questionId: resp.questionId,
@@ -128,19 +144,35 @@ router.post('/submit', authenticateToken, (req, res) => {
         isCorrect,
         correctAnswer: question.correct_answer,
         explanation: question.explanation,
-        points: isCorrect ? question.points : 0
+        points: pointsEarned - confidencePenalty,
+        confidence: resp.confidence
       });
     }
 
     // Calculate XP with anti-abuse scoring
-    const scoreResult = calculateScore(userId, quizId, totalPoints, maxPoints, quiz.xp_reward);
+    const scoreResult = calculateScore(userId, quizId, Math.max(0, totalPoints), maxPoints, quiz.xp_reward);
+    let finalXpEarned = scoreResult.xpEarned;
+
+    // Ghost Run (Record Beat) Check
+    const pastAttempts = queryAll(
+      'SELECT time_taken_seconds FROM attempts WHERE user_id = ? AND quiz_id = ? AND completed = 1 AND time_taken_seconds IS NOT NULL',
+      [userId, quizId]
+    );
+    let ghostRunBonus = 0;
+    if (pastAttempts.length > 0) {
+      const bestTime = Math.min(...pastAttempts.map(a => a.time_taken_seconds));
+      if (timeTaken < bestTime) {
+        ghostRunBonus = 50; // Bonus for beating own record
+        finalXpEarned += ghostRunBonus;
+      }
+    }
 
     // Create attempt record
     const difficultyBefore = quiz.difficulty;
     const attemptResult = runQuery(
       `INSERT INTO attempts (user_id, quiz_id, score, max_score, xp_earned, time_taken_seconds, difficulty_at_start, difficulty_at_end, completed, completed_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, datetime('now'))`,
-      [userId, quizId, totalPoints, maxPoints, scoreResult.xpEarned, timeTaken || 0, difficultyBefore, difficultyBefore]
+      [userId, quizId, Math.max(0, totalPoints), maxPoints, finalXpEarned, timeTaken || 0, difficultyBefore, difficultyBefore]
     );
 
     // Save individual responses
@@ -154,7 +186,7 @@ router.post('/submit', authenticateToken, (req, res) => {
 
     // Update user XP and level
     const user = queryOne('SELECT * FROM users WHERE id = ?', [userId]);
-    const newXp = user.total_xp + scoreResult.xpEarned;
+    const newXp = user.total_xp + finalXpEarned;
     const newLevel = Math.floor(newXp / 300) + 1; // Level up every 300 XP
     const newGems = (user.gems || 0) + 10; // 10 gems per quiz
 
@@ -214,21 +246,22 @@ router.post('/submit', authenticateToken, (req, res) => {
       runQuery(
         `UPDATE daily_activity SET quizzes_completed = quizzes_completed + 1, xp_earned = xp_earned + ?, time_spent_seconds = time_spent_seconds + ?
          WHERE user_id = ? AND activity_date = ?`,
-        [scoreResult.xpEarned, timeTaken || 0, userId, today]
+        [finalXpEarned, timeTaken || 0, userId, today]
       );
     } else {
       runQuery(
         `INSERT INTO daily_activity (user_id, activity_date, quizzes_completed, xp_earned, time_spent_seconds)
          VALUES (?, ?, 1, ?, ?)`,
-        [userId, today, scoreResult.xpEarned, timeTaken || 0]
+        [userId, today, finalXpEarned, timeTaken || 0]
       );
     }
 
     res.json({
-      score: totalPoints,
+      score: Math.max(0, totalPoints),
       maxScore: maxPoints,
       percentage: Math.round(performanceRatio * 100),
-      xpEarned: scoreResult.xpEarned,
+      xpEarned: finalXpEarned,
+      ghostRunBonus,
       xpPenalty: scoreResult.penalty,
       totalXp: newXp,
       level: newLevel,

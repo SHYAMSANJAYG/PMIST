@@ -60,7 +60,7 @@ export function updateStreak(userId) {
 
   // Update user
   runQuery(
-    `UPDATE users SET current_streak = ?, longest_streak = ?, last_active_date = ?, gems = ? WHERE id = ?`,
+    `UPDATE users SET current_streak = ?, longest_streak = ?, last_active_date = ?, last_activity_time = datetime('now'), gems = ? WHERE id = ?`,
     [newStreak, longestStreak, today, newGems, userId]
   );
 

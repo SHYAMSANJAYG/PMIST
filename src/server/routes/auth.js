@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { queryOne, queryAll, runQuery } from '../db/database.js';
 import { authenticateToken, JWT_SECRET } from '../middleware/authMiddleware.js';
+import { applyPointDecay } from '../engines/decayEngine.js';
 
 const router = Router();
 
@@ -25,8 +26,8 @@ router.post('/register', (req, res) => {
     const avatarSeed = username.toLowerCase();
 
     const result = runQuery(
-      `INSERT INTO users (username, email, password_hash, display_name, role, avatar_seed, last_active_date)
-       VALUES (?, ?, ?, ?, 'learner', ?, ?)`,
+      `INSERT INTO users (username, email, password_hash, display_name, role, avatar_seed, last_active_date, last_activity_time)
+       VALUES (?, ?, ?, ?, 'learner', ?, ?, datetime('now'))`,
       [username, email, passwordHash, displayName, avatarSeed, new Date().toISOString().split('T')[0]]
     );
 
@@ -63,6 +64,8 @@ router.post('/login', (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
+    runQuery(`UPDATE users SET last_activity_time = datetime('now') WHERE id = ?`, [user.id]);
+
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
       JWT_SECRET,
@@ -91,6 +94,7 @@ router.post('/login', (req, res) => {
 // GET /api/auth/me
 router.get('/me', authenticateToken, (req, res) => {
   try {
+    applyPointDecay();
     const user = queryOne('SELECT * FROM users WHERE id = ?', [req.user.id]);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });

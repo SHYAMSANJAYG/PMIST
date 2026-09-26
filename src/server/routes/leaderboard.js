@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import { queryAll } from '../db/database.js';
+import { applyPointDecay } from '../engines/decayEngine.js';
 
 const router = Router();
 
 // GET /api/leaderboard — global leaderboard
 router.get('/', (req, res) => {
   try {
+    applyPointDecay();
     const limit = parseInt(req.query.limit) || 20;
 
     const leaderboard = queryAll(
@@ -31,6 +33,7 @@ router.get('/', (req, res) => {
 // GET /api/leaderboard/topic/:topicId — topic-specific leaderboard
 router.get('/topic/:topicId', (req, res) => {
   try {
+    applyPointDecay();
     const leaderboard = queryAll(
       `SELECT u.id, u.username, u.display_name, u.avatar_seed,
         lts.avg_score, lts.total_attempts, lts.mastery_level, lts.current_difficulty
