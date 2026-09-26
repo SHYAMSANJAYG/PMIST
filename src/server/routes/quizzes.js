@@ -223,6 +223,10 @@ router.post('/submit', authenticateToken, (req, res) => {
       );
     }
 
+    // Award gems for completing quiz
+    runQuery('UPDATE users SET total_gems = total_gems + 25 WHERE id = ?', [userId]);
+    runQuery('INSERT INTO gems (user_id, amount, action_type) VALUES (?, 25, "quiz_complete")', [userId]);
+
     res.json({
       score: totalPoints,
       maxScore: maxPoints,
@@ -231,6 +235,7 @@ router.post('/submit', authenticateToken, (req, res) => {
       xpPenalty: scoreResult.penalty,
       totalXp: newXp,
       level: newLevel,
+      gemsEarned: 25,
       streak: streakInfo,
       newDifficulty,
       newBadges,

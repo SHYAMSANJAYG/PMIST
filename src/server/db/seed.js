@@ -422,6 +422,36 @@ async function seed() {
     }
   }
 
+  // ============ REWARDS CATALOG ============
+  console.log('💎 Creating rewards catalog...');
+  const rewards = [
+    ['T-Shirt', 'Premium Brilliance branded T-shirt', '👕', 'merchandise', 500],
+    ['Stationery Kit', 'Complete study kit with notebook and pens', '📚', 'stationery', 300],
+    ['Water Bottle', 'Eco-friendly water bottle', '💧', 'merchandise', 400],
+    ['Streak Recovery x1', 'Recover 1 lost streak day', '🔥', 'streak_recovery', 100],
+    ['Streak Recovery x3', 'Recover 3 lost streak days', '🔥', 'streak_recovery', 250],
+    ['XP Boost x2', 'Double XP for next 5 quizzes', '⚡', 'boost', 350],
+    ['Premium Badge', 'Exclusive premium achievement badge', '⭐', 'merchandise', 600],
+    ['Notebook Set', 'Set of 3 premium notebooks', '📓', 'stationery', 200],
+  ];
+
+  for (const [name, desc, icon, cat, cost] of rewards) {
+    runQuery(
+      'INSERT INTO rewards (name, description, icon, category, cost_gems, is_active) VALUES (?, ?, ?, ?, ?, 1)',
+      [name, desc, icon, cat, cost]
+    );
+  }
+
+  // ============ INITIAL GEMS FOR USERS ============
+  console.log('💎 Assigning initial gems to users...');
+  for (let userId = 2; userId <= 9; userId++) {
+    const initialGems = Math.floor(Math.random() * 500) + 200;
+    runQuery(
+      'UPDATE users SET total_gems = ? WHERE id = ?',
+      [initialGems, userId]
+    );
+  }
+
   console.log('\n✅ Database seeded successfully!');
   console.log('   📚 5 Topics (Logic, Math, Physics, CS, Science)');
   console.log('   📝 25 Quizzes (5 per topic, difficulty 1-5)');

@@ -70,4 +70,12 @@ export const api = {
 
   getParticipationVsAchievement: () =>
     request('/analytics/participation-vs-achievement'),
+
+  getMyGems: () => request('/gems/my-gems'),
+  getRewards: () => request('/gems/rewards'),
+  claimReward: (rewardId) =>
+    request('/gems/claim-reward', {
+      method: 'POST',
+      body: JSON.stringify({ rewardId }),
+    }),
 };

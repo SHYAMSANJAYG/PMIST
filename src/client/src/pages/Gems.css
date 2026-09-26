@@ -1,0 +1,238 @@
+.gems-page {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--text-secondary);
+  padding: var(--space-sm) 0;
+  margin-bottom: var(--space-lg);
+  font-size: 0.9rem;
+  transition: color var(--transition-fast);
+}
+
+.back-button:hover { color: var(--primary-light); }
+
+.gems-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xl) var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.15), rgba(16, 185, 129, 0.1));
+  border: 1px solid rgba(108, 99, 255, 0.25);
+}
+
+.gems-balance {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.gem-icon-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #6C63FF, #10B981);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(108, 99, 255, 0.4);
+}
+
+.gem-icon-large svg {
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.gem-balance-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.gem-balance-amount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.gem-balance-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+.gems-earn-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  text-align: right;
+}
+
+.gems-earn-info p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.gems-earn-info svg {
+  color: var(--accent);
+}
+
+.success-toast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(108, 99, 255, 0.1));
+  border: 1px solid var(--success);
+  border-radius: var(--radius-md);
+  color: var(--success);
+  font-weight: 600;
+  margin-bottom: var(--space-xl);
+}
+
+.rewards-section { margin-bottom: var(--space-2xl); }
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+.reward-card {
+  padding: var(--space-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.reward-card.locked { opacity: 0.6; }
+
+.reward-card.locked .reward-icon { filter: grayscale(1); }
+
+.reward-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+.reward-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-sm);
+}
+
+.reward-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.reward-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+
+.reward-cost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.reward-cost.affordable { color: var(--accent); }
+
+.reward-cost svg { color: var(--accent); }
+
+.reward-limit {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.claim-btn {
+  width: 100%;
+  padding: var(--space-md);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.claim-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+}
+
+.claim-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.history-section { margin-top: var(--space-xl); }
+
+.history-list {
+  padding: var(--space-lg);
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.history-item:last-child { border-bottom: none; }
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.history-action {
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.history-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.history-amount {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.history-amount.positive { color: var(--success); }
+.history-amount.negative { color: var(--danger); }
+
+.empty-history {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .gems-header {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-lg);
+  }
+
+  .gems-earn-info { text-align: center; }
+
+  .gems-balance { flex-direction: column; }
+}

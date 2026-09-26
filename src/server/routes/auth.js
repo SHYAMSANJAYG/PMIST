@@ -79,6 +79,7 @@ router.post('/login', (req, res) => {
         totalXp: user.total_xp,
         currentLevel: user.current_level,
         currentStreak: user.current_streak,
+        totalGems: user.total_gems || 0,
         avatarSeed: user.avatar_seed
       }
     });
@@ -121,6 +122,7 @@ router.get('/me', authenticateToken, (req, res) => {
       currentLevel: user.current_level,
       currentStreak: user.current_streak,
       longestStreak: user.longest_streak,
+      totalGems: user.total_gems || 0,
       avatarSeed: user.avatar_seed,
       createdAt: user.created_at,
       badges,
