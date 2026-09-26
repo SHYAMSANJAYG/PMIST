@@ -158,8 +158,8 @@ router.post('/submit', authenticateToken, (req, res) => {
     const newLevel = Math.floor(newXp / 300) + 1; // Level up every 300 XP
 
     runQuery(
-      'UPDATE users SET total_xp = ?, current_level = ?, last_active_date = ? WHERE id = ?',
-      [newXp, newLevel, new Date().toISOString().split('T')[0], userId]
+      'UPDATE users SET total_xp = ?, current_level = ? WHERE id = ?',
+      [newXp, newLevel, userId]
     );
 
     // Update topic stats

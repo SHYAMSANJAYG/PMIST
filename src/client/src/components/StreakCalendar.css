@@ -1,0 +1,309 @@
+/* ============================================
+   Streak Calendar Popup
+   ============================================ */
+
+/* Wrapper for the streak button + calendar */
+.streak-calendar-wrapper {
+  position: relative;
+}
+
+.streak-trigger-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.streak-trigger-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  transform: scale(1.05);
+}
+
+.streak-trigger-btn.open {
+  background: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Calendar panel */
+.streak-calendar-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: -40px;
+  width: 320px;
+  background: rgba(20, 20, 40, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  padding: 0;
+  z-index: 300;
+  animation: calendarSlideIn 0.2s ease-out;
+  overflow: hidden;
+}
+
+@keyframes calendarSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.streak-cal-header {
+  padding: var(--space-lg);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(245, 158, 11, 0.08));
+  border-bottom: 1px solid rgba(239, 68, 68, 0.1);
+}
+
+.streak-cal-fire {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.streak-fire-icon {
+  color: #f87171;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+  animation: fireGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes fireGlow {
+  from { filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.4)); }
+  to { filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.6)); }
+}
+
+.streak-cal-count {
+  display: flex;
+  flex-direction: column;
+}
+
+.streak-number {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #f87171, #FBBF24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.streak-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.streak-cal-stats {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.streak-mini-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Month navigation */
+.streak-cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.cal-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cal-nav-btn:hover:not(.disabled) {
+  background: rgba(108, 99, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.cal-nav-btn.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.cal-month-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+/* Calendar grid */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: var(--space-sm) var(--space-md);
+}
+
+.cal-day-header {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cal-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  position: relative;
+  cursor: default;
+  transition: background 0.15s;
+}
+
+.cal-day.empty {
+  /* placeholder for offset */
+}
+
+.cal-day-num {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+.cal-day.future .cal-day-num {
+  opacity: 0.25;
+}
+
+.cal-day.active {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.cal-day.active .cal-day-num {
+  color: #f87171;
+  font-weight: 700;
+}
+
+.cal-day.active:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.cal-day-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f87171;
+  margin-top: 2px;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+}
+
+.cal-day.today {
+  outline: 2px solid rgba(108, 99, 255, 0.5);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.cal-day.today .cal-day-num {
+  color: var(--primary-light);
+  font-weight: 700;
+}
+
+/* Tooltip */
+.cal-tooltip {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xs) var(--space-md);
+  margin: 0 var(--space-md);
+  background: rgba(108, 99, 255, 0.08);
+  border-radius: var(--radius-sm);
+  gap: 2px;
+}
+
+.cal-tooltip-date {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cal-tooltip-detail {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+/* Legend */
+.cal-legend {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  justify-content: center;
+}
+
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.cal-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.cal-legend-dot.active {
+  background: #f87171;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+}
+
+.cal-legend-dot.today-ring {
+  background: transparent;
+  border: 2px solid rgba(108, 99, 255, 0.6);
+}
+
+/* Loading */
+.cal-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .streak-calendar-panel {
+    right: -20px;
+    width: 290px;
+  }
+}

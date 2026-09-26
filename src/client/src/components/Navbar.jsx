@@ -1,16 +1,51 @@
+import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import { Trophy, LayoutDashboard, Swords, Medal, LogOut, Shield, Flame, Star } from 'lucide-react';
+import { Trophy, LayoutDashboard, Swords, Medal, LogOut, Shield, Flame, Star, User, ChevronDown } from 'lucide-react';
+import StreakCalendar from './StreakCalendar';
 import './Navbar.css';
 
 export default function Navbar() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [streakOpen, setStreakOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
+    setDropdownOpen(false);
     logout();
     navigate('/login');
   };
+
+  const handleProfile = () => {
+    setDropdownOpen(false);
+    navigate('/profile');
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
+
+  // Close dropdown on Escape key
+  useEffect(() => {
+    function handleEsc(e) {
+      if (e.key === 'Escape') setDropdownOpen(false);
+    }
+    if (dropdownOpen) {
+      document.addEventListener('keydown', handleEsc);
+    }
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [dropdownOpen]);
 
   if (!user) return null;
 
@@ -55,22 +90,65 @@ export default function Navbar() {
               <Star size={14} />
               {user.totalXp || 0} XP
             </span>
-            <span className="stat-badge streak">
-              <Flame size={14} />
-              {user.currentStreak || 0}
-            </span>
+            <div className="streak-calendar-wrapper">
+              <button
+                className={`streak-trigger-btn ${streakOpen ? 'open' : ''}`}
+                onClick={() => setStreakOpen(prev => !prev)}
+                id="streak-calendar-trigger"
+              >
+                <Flame size={14} />
+                {user.currentStreak || 0}
+              </button>
+              {streakOpen && (
+                <StreakCalendar
+                  currentStreak={user.currentStreak || 0}
+                  onClose={() => setStreakOpen(false)}
+                />
+              )}
+            </div>
           </div>
-          <div className="user-avatar-group">
-            <img
-              src={`https://api.dicebear.com/7.x/thumbs/svg?seed=${user.avatarSeed || user.username}`}
-              alt={user.displayName}
-              className="user-avatar"
-            />
-            <span className="user-level">Lv.{user.currentLevel || 1}</span>
+
+          {/* Avatar dropdown */}
+          <div className="avatar-dropdown-wrapper" ref={dropdownRef}>
+            <button
+              className="avatar-dropdown-trigger"
+              onClick={() => setDropdownOpen(prev => !prev)}
+              aria-expanded={dropdownOpen}
+              aria-haspopup="true"
+              id="nav-avatar-menu"
+            >
+              <div className="user-avatar-group">
+                <img
+                  src={`https://api.dicebear.com/7.x/thumbs/svg?seed=${user.avatarSeed || user.username}`}
+                  alt={user.displayName}
+                  className="user-avatar"
+                />
+                <span className="user-level">Lv.{user.currentLevel || 1}</span>
+              </div>
+              <ChevronDown
+                size={14}
+                className={`avatar-chevron ${dropdownOpen ? 'open' : ''}`}
+              />
+            </button>
+
+            {dropdownOpen && (
+              <div className="avatar-dropdown-menu" role="menu">
+                <div className="dropdown-user-info">
+                  <span className="dropdown-display-name">{user.displayName}</span>
+                  <span className="dropdown-username">@{user.username}</span>
+                </div>
+                <div className="dropdown-divider" />
+                <button className="dropdown-item" onClick={handleProfile} role="menuitem" id="nav-profile">
+                  <User size={16} />
+                  <span>My Profile</span>
+                </button>
+                <button className="dropdown-item danger" onClick={handleLogout} role="menuitem" id="nav-logout">
+                  <LogOut size={16} />
+                  <span>Log Out</span>
+                </button>
+              </div>
+            )}
           </div>
-          <button className="nav-link logout-btn" onClick={handleLogout} title="Logout" id="nav-logout">
-            <LogOut size={18} />
-          </button>
         </div>
       </div>
     </nav>

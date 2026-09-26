@@ -61,6 +61,11 @@ export const api = {
 
   getMyBadges: () => request('/badges/my-badges'),
 
+  getAttemptReview: (attemptId) => request(`/scoring/attempt/${attemptId}/review`),
+
+  getActivityCalendar: (year, month) =>
+    request(`/scoring/activity-calendar?year=${year}&month=${month}`),
+
   getClassAnalytics: () => request('/analytics/class'),
 
   getParticipationVsAchievement: () =>
