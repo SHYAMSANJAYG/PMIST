@@ -18,13 +18,13 @@ This file provides a simple progress record. Teams should update it at the annou
 
 ## Checkpoint 2 – Core Development
 
-- Time:
-- Current commit:
-- Backend / core logic progress:
-- Frontend progress:
-- Database/API progress:
-- Working features:
-- Blockers:
+- Time: 1:48 PM IST, 26 Sep 2026
+- Current commit: 3a38db65bf3d1626ba2b8335102fa2dea664471f
+- Backend / core logic progress: Completed all engines (Scoring, Badge, Streak, Adaptive). All core routes defined and mapped.
+- Frontend progress: Completed React + Vite setup. Implemented Auth pages (Login/Register), Learner Dashboard (stats, topic cards, recent activity), Quiz Gameplay (topic selection, adaptive difficulty, results), Leaderboard (global and topic-specific), Badges page, and Admin Analytics Dashboard. Added API helper and Zustand auth store.
+- Database/API progress: All SQLite schema defined. Seed data created (Topics, Quizzes, Questions, Badges). API endpoints for auth, quizzes, scores, badges, leaderboard, and analytics fully functional.
+- Working features: User authentication, dashboard viewing, adaptive quiz gameplay, scoring/XP tracking, leveling up, streak tracking, badge earning, leaderboard ranking, and admin analytics tracking participation vs achievement.
+- Blockers: None at this time.
 
 ## Checkpoint 3 – Integration
 
