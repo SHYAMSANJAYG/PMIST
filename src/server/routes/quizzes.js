@@ -22,10 +22,10 @@ router.get('/topics', (req, res) => {
   }
 });
 
-// GET /api/quizzes/adaptive?topicId=X — get adaptive quiz for user
-router.get('/adaptive', authenticateToken, (req, res) => {
+// GET /api/quiz/adaptive/:topicId — get adaptive quiz for user
+router.get('/adaptive/:topicId', authenticateToken, (req, res) => {
   try {
-    const { topicId } = req.query;
+    const { topicId } = req.params;
     if (!topicId) {
       return res.status(400).json({ error: 'topicId required' });
     }

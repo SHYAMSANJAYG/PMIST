@@ -12,7 +12,7 @@ import analyticsRoutes from './routes/analytics.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -36,8 +36,8 @@ async function startServer() {
 
     // Routes
     app.use('/api/auth', authRoutes);
-    app.use('/api/quizzes', quizRoutes);
-    app.use('/api/scores', scoreRoutes);
+    app.use('/api/quiz', quizRoutes);
+    app.use('/api/scoring', scoreRoutes);
     app.use('/api/badges', badgeRoutes);
     app.use('/api/leaderboard', leaderboardRoutes);
     app.use('/api/analytics', analyticsRoutes);
