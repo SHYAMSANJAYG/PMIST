@@ -23,13 +23,19 @@ export function updateStreak(userId) {
   let newStreak = user.current_streak;
   let streakIncreased = false;
 
+  let gemsEarned = 0;
   if (!lastActive || lastActive === '') {
     // First activity ever
     newStreak = 1;
     streakIncreased = true;
+    gemsEarned = 50;
   } else if (lastActive === today) {
-    // Already active today — no streak change
-    // Streak stays the same
+    // Already active today — no streak change, UNLESS streak is 0
+    if (newStreak === 0) {
+      newStreak = 1;
+      streakIncreased = true;
+      gemsEarned = 50;
+    }
   } else {
     // Check if last active was yesterday
     const lastDate = new Date(lastActive);
@@ -40,24 +46,28 @@ export function updateStreak(userId) {
       // Consecutive day — increment streak
       newStreak = user.current_streak + 1;
       streakIncreased = true;
+      gemsEarned = 50;
     } else if (diffDays > 1) {
       // Missed days — reset streak
       newStreak = 1;
       streakIncreased = true; // It's a "new" streak
+      gemsEarned = 50;
     }
   }
 
   const longestStreak = Math.max(user.longest_streak, newStreak);
+  const newGems = (user.gems || 0) + gemsEarned;
 
   // Update user
   runQuery(
-    `UPDATE users SET current_streak = ?, longest_streak = ?, last_active_date = ? WHERE id = ?`,
-    [newStreak, longestStreak, today, userId]
+    `UPDATE users SET current_streak = ?, longest_streak = ?, last_active_date = ?, gems = ? WHERE id = ?`,
+    [newStreak, longestStreak, today, newGems, userId]
   );
 
   return {
     currentStreak: newStreak,
     longestStreak,
-    streakIncreased
+    streakIncreased,
+    gemsEarned
   };
 }

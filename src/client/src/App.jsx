@@ -71,6 +71,7 @@ export default function App() {
             <Route path="/badges" element={<ProtectedRoute><BadgesPage /></ProtectedRoute>} />
             <Route path="/gems" element={<ProtectedRoute><GemsPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/rewards" element={<ProtectedRoute><RewardsPage /></ProtectedRoute>} />
 
             {/* Admin only */}
             <Route path="/admin" element={<ProtectedRoute adminOnly><AdminPage /></ProtectedRoute>} />

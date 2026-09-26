@@ -59,7 +59,7 @@ export const api = {
   getTopicLeaderboard: (topicId) =>
     request(`/leaderboard/topic/${topicId}`),
 
-  getMyBadges: () => request('/badges/my-badges'),
+  getMyBadges: () => request('/badges/me'),
 
   getAttemptReview: (attemptId) => request(`/scoring/attempt/${attemptId}/review`),
 

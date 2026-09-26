@@ -20,7 +20,7 @@ async function seed() {
   console.log('🌱 Seeding Brilliance database...\n');
 
   // Clear existing data in dependency order
-  const tables = ['daily_activity', 'learner_topic_stats', 'user_badges', 'responses', 'attempts', 'questions', 'quizzes', 'badges', 'topics', 'users'];
+  const tables = ['user_rewards', 'rewards', 'daily_activity', 'learner_topic_stats', 'user_badges', 'responses', 'attempts', 'questions', 'quizzes', 'badges', 'topics', 'users'];
   for (const table of tables) {
     db.run(`DELETE FROM ${table}`);
   }

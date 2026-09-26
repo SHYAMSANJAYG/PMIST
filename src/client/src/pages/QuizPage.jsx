@@ -269,6 +269,11 @@ export default function QuizPage() {
               <span className="rs-label">XP Earned</span>
             </div>
             <div className="result-stat">
+              <Star size={20} color="#ec4899" />
+              <span className="rs-value">+{results.gemsEarned}</span>
+              <span className="rs-label">Gems Earned</span>
+            </div>
+            <div className="result-stat">
               <Trophy size={20} color="#10B981" />
               <span className="rs-value">{results.totalXp}</span>
               <span className="rs-label">Total XP</span>
