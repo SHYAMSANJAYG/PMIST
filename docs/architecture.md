@@ -118,4 +118,6 @@ After each quiz attempt:
 
 ## 6. Architecture Diagram
 
-See: `docs/architecture.png`
+![Architecture Diagram](./architecture.png)
+
+[📐 Architecture Diagram](./architecture.png)
