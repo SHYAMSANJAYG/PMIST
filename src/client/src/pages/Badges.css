@@ -1,0 +1,280 @@
+/* ============================================
+   Badges & Profile Page Styles
+   ============================================ */
+
+.badges-page {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+}
+
+/* Profile header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.profile-header:hover { transform: none; }
+
+.profile-avatar-section {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-glow);
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 150px;
+}
+
+.profile-info h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.profile-username {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.profile-stats-row {
+  display: flex;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.ps-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ps-val {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.ps-lbl {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Topic mastery */
+.topic-mastery-section {
+  margin-bottom: var(--space-xl);
+}
+
+.mastery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-md);
+}
+
+.mastery-card {
+  padding: var(--space-lg);
+}
+
+.mastery-card:hover { transform: none; }
+
+.mastery-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.mastery-icon {
+  font-size: 1.5rem;
+}
+
+.mastery-level-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.mastery-level-tag.master { background: rgba(245, 158, 11, 0.15); color: var(--accent-light); }
+.mastery-level-tag.advanced { background: rgba(108, 99, 255, 0.15); color: var(--primary-light); }
+.mastery-level-tag.intermediate { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+.mastery-level-tag.beginner { background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); }
+
+.mastery-card h4 {
+  font-size: 0.9rem;
+  margin-bottom: var(--space-sm);
+}
+
+.mastery-bar-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+}
+
+.mastery-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s ease;
+}
+
+.mastery-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* Badges grid */
+.badges-section {
+  margin-bottom: var(--space-xl);
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+
+.badge-card {
+  padding: var(--space-lg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-card:hover {
+  transform: translateY(-4px);
+}
+
+.badge-glow-effect {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  opacity: 0.1;
+}
+
+.badge-card.rarity-legendary .badge-glow-effect {
+  background: #FBBF24;
+  opacity: 0.2;
+  width: 100px;
+  height: 100px;
+  filter: blur(20px);
+}
+
+.badge-card.rarity-epic .badge-glow-effect {
+  background: #A855F7;
+  opacity: 0.15;
+  width: 80px;
+  height: 80px;
+  filter: blur(15px);
+}
+
+.badge-card.rarity-rare .badge-glow-effect {
+  background: #3B82F6;
+  opacity: 0.12;
+  filter: blur(10px);
+}
+
+.badge-icon-xl {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+.badge-card h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.badge-card p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: var(--space-sm);
+}
+
+.badge-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.rarity-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.rarity-tag.legendary { background: rgba(251, 191, 36, 0.15); color: #FBBF24; }
+.rarity-tag.epic { background: rgba(168, 85, 247, 0.15); color: #C084FC; }
+.rarity-tag.rare { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
+.rarity-tag.common { background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); }
+
+.xp-bonus {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent-light);
+}
+
+/* Locked badges */
+.badge-card.locked {
+  opacity: 0.5;
+  position: relative;
+}
+
+.badge-card.locked:hover {
+  transform: none;
+  opacity: 0.6;
+}
+
+.locked-icon {
+  filter: grayscale(1);
+}
+
+.lock-overlay {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  color: var(--text-muted);
+}
+
+.badges-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-2xl);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.badges-empty:hover { transform: none; }
+
+@media (max-width: 768px) {
+  .profile-header { flex-direction: column; text-align: center; }
+  .profile-stats-row { justify-content: center; }
+  .badges-grid { grid-template-columns: repeat(2, 1fr); }
+}

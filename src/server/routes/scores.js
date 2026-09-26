@@ -4,8 +4,8 @@ import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-// GET /api/scores/me — get current user's score info
-router.get('/me', authenticateToken, (req, res) => {
+// GET /api/scoring/my-scores — get current user's score info
+router.get('/my-scores', authenticateToken, (req, res) => {
   try {
     const user = queryOne('SELECT * FROM users WHERE id = ?', [req.user.id]);
     if (!user) return res.status(404).json({ error: 'User not found' });
