@@ -45,6 +45,9 @@ export const api = {
   getAdaptiveQuiz: (topicId) =>
     request(`/quiz/adaptive/${topicId}`),
 
+  getQuiz: (quizId) =>
+    request(`/quiz/${quizId}`),
+
   submitQuiz: (data) =>
     request('/quiz/submit', {
       method: 'POST',

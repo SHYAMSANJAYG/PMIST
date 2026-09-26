@@ -35,11 +35,16 @@ export default function QuizPage() {
     api.getTopics().then(setTopics).catch(console.error);
   }, []);
 
-  // Auto-start if topic in URL
+  // Auto-start if topic or quiz in URL
   useEffect(() => {
     const topicId = searchParams.get('topic');
-    if (topicId && phase === 'select') {
-      startQuiz(parseInt(topicId));
+    const quizId = searchParams.get('quiz');
+    if (phase === 'select') {
+      if (quizId) {
+        startSpecificQuiz(parseInt(quizId));
+      } else if (topicId) {
+        startQuiz(parseInt(topicId));
+      }
     }
   }, [searchParams]);
 
@@ -55,6 +60,25 @@ export default function QuizPage() {
     setLoading(true);
     try {
       const data = await api.getAdaptiveQuiz(topicId);
+      setQuiz(data.quiz);
+      setQuestions(data.questions);
+      setCurrentQ(0);
+      setAnswers({});
+      setConfidences({});
+      setSelectedOption(null);
+      setTimer(0);
+      setPhase('playing');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startSpecificQuiz = async (quizId) => {
+    setLoading(true);
+    try {
+      const data = await api.getQuiz(quizId);
       setQuiz(data.quiz);
       setQuestions(data.questions);
       setCurrentQ(0);
@@ -230,14 +254,14 @@ export default function QuizPage() {
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button 
                   onClick={() => selectAnswer(q.id, answers[q.id], 'low')}
-                  className={`btn ${confidences[q.id] === 'low' ? 'btn-primary' : 'btn-secondary'}`}
+                  className={`action-btn ${confidences[q.id] === 'low' ? 'primary' : 'secondary'}`}
                   style={{ padding: '6px 12px', fontSize: '0.85rem' }}
                 >
                   Low (50%)
                 </button>
                 <button 
                   onClick={() => selectAnswer(q.id, answers[q.id], 'high')}
-                  className={`btn ${confidences[q.id] === 'high' ? 'btn-primary' : 'btn-secondary'}`}
+                  className={`action-btn ${confidences[q.id] === 'high' ? 'primary' : 'secondary'}`}
                   style={{ padding: '6px 12px', fontSize: '0.85rem' }}
                 >
                   High (100%)
