@@ -20,7 +20,7 @@ async function seed() {
   console.log('🌱 Seeding Brilliance database...\n');
 
   // Clear existing data in dependency order
-  const tables = ['daily_activity', 'learner_topic_stats', 'user_badges', 'responses', 'attempts', 'questions', 'quizzes', 'badges', 'topics', 'users'];
+  const tables = ['user_rewards', 'rewards', 'daily_activity', 'learner_topic_stats', 'user_badges', 'responses', 'attempts', 'questions', 'quizzes', 'badges', 'topics', 'users'];
   for (const table of tables) {
     db.run(`DELETE FROM ${table}`);
   }
@@ -420,6 +420,19 @@ async function seed() {
       runQuery('INSERT OR IGNORE INTO daily_activity (user_id, activity_date, quizzes_completed, xp_earned, time_spent_seconds) VALUES (?, ?, ?, ?, ?)',
         [5, dateStr, 1, Math.floor(Math.random() * 50) + 20, Math.floor(Math.random() * 200) + 60]);
     }
+  }
+
+  // ============ REWARDS ============
+  console.log('🎁 Creating rewards (Shirts, Stationary Kit, Streak Recovery, etc.)...');
+  const rewards = [
+    ['Brilliance T-Shirt', 'A cool t-shirt with the Brilliance logo.', 1000, 'merch', 'https://via.placeholder.com/150?text=T-Shirt'],
+    ['Stationary Kit', 'Notebook, pens, and pencils for your studies.', 500, 'merch', 'https://via.placeholder.com/150?text=Kit'],
+    ['Streak Recovery', 'Recover a lost streak without penalty.', 200, 'powerup', 'https://via.placeholder.com/150?text=Streak'],
+    ['Profile Badge', 'A special badge for your profile.', 100, 'other', 'https://via.placeholder.com/150?text=Badge']
+  ];
+
+  for (const [name, desc, cost, cat, img] of rewards) {
+    runQuery('INSERT INTO rewards (name, description, cost, category, image_url) VALUES (?, ?, ?, ?, ?)', [name, desc, cost, cat, img]);
   }
 
   console.log('\n✅ Database seeded successfully!');

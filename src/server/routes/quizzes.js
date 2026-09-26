@@ -156,10 +156,11 @@ router.post('/submit', authenticateToken, (req, res) => {
     const user = queryOne('SELECT * FROM users WHERE id = ?', [userId]);
     const newXp = user.total_xp + scoreResult.xpEarned;
     const newLevel = Math.floor(newXp / 300) + 1; // Level up every 300 XP
+    const newGems = (user.gems || 0) + 10; // 10 gems per quiz
 
     runQuery(
-      'UPDATE users SET total_xp = ?, current_level = ? WHERE id = ?',
-      [newXp, newLevel, userId]
+      'UPDATE users SET total_xp = ?, current_level = ?, gems = ? WHERE id = ?',
+      [newXp, newLevel, newGems, userId]
     );
 
     // Update topic stats
@@ -231,6 +232,7 @@ router.post('/submit', authenticateToken, (req, res) => {
       xpPenalty: scoreResult.penalty,
       totalXp: newXp,
       level: newLevel,
+      gemsEarned: 10 + (streakInfo.gemsEarned || 0),
       streak: streakInfo,
       newDifficulty,
       newBadges,

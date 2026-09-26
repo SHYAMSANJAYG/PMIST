@@ -59,7 +59,7 @@ export const api = {
   getTopicLeaderboard: (topicId) =>
     request(`/leaderboard/topic/${topicId}`),
 
-  getMyBadges: () => request('/badges/my-badges'),
+  getMyBadges: () => request('/badges/me'),
 
   getAttemptReview: (attemptId) => request(`/scoring/attempt/${attemptId}/review`),
 
@@ -70,4 +70,12 @@ export const api = {
 
   getParticipationVsAchievement: () =>
     request('/analytics/participation-vs-achievement'),
+
+  getRewards: () => request('/rewards'),
+
+  redeemReward: (rewardId) =>
+    request('/rewards/redeem', {
+      method: 'POST',
+      body: JSON.stringify({ rewardId }),
+    }),
 };

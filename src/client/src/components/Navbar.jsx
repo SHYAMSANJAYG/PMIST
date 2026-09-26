@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import { Trophy, LayoutDashboard, Swords, Medal, LogOut, Shield, Flame, Star, User, ChevronDown } from 'lucide-react';
+import { Trophy, LayoutDashboard, Swords, Medal, LogOut, Shield, Flame, Star, User, ChevronDown, Gift, Gem } from 'lucide-react';
 import StreakCalendar from './StreakCalendar';
 import './Navbar.css';
 
@@ -76,6 +76,10 @@ export default function Navbar() {
             <Medal size={18} />
             <span>Badges</span>
           </NavLink>
+          <NavLink to="/rewards" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} id="nav-rewards">
+            <Gift size={18} />
+            <span>Rewards</span>
+          </NavLink>
           {isAdmin && (
             <NavLink to="/admin" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} id="nav-admin">
               <Shield size={18} />
@@ -89,6 +93,10 @@ export default function Navbar() {
             <span className="stat-badge xp">
               <Star size={14} />
               {user.totalXp || 0} XP
+            </span>
+            <span className="stat-badge gems" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b' }}>
+              <Gem size={14} />
+              {user.gems || 0}
             </span>
             <div className="streak-calendar-wrapper">
               <button

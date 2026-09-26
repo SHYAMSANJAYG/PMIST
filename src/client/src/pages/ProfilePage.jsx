@@ -116,6 +116,16 @@ export default function ProfilePage() {
         </motion.div>
 
         <motion.div className="profile-stat glass-card" variants={item}>
+          <div className="profile-stat-icon" style={{ background: 'rgba(236, 72, 153, 0.15)' }}>
+            <Star size={20} color="#ec4899" />
+          </div>
+          <div className="profile-stat-content">
+            <span className="profile-stat-value">{user?.gems || 0}</span>
+            <span className="profile-stat-label">Gems Earned</span>
+          </div>
+        </motion.div>
+
+        <motion.div className="profile-stat glass-card" variants={item}>
           <div className="profile-stat-icon" style={{ background: 'rgba(139, 92, 246, 0.15)' }}>
             <Award size={20} color="#a78bfa" />
           </div>

@@ -8,6 +8,7 @@ import scoreRoutes from './routes/scores.js';
 import badgeRoutes from './routes/badges.js';
 import leaderboardRoutes from './routes/leaderboard.js';
 import analyticsRoutes from './routes/analytics.js';
+import rewardsRoutes from './routes/rewards.js';
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ async function startServer() {
     app.use('/api/badges', badgeRoutes);
     app.use('/api/leaderboard', leaderboardRoutes);
     app.use('/api/analytics', analyticsRoutes);
+    app.use('/api/rewards', rewardsRoutes);
 
     // Health check
     app.get('/api/health', (req, res) => {

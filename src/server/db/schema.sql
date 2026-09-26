@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     current_level INTEGER DEFAULT 1,
     current_streak INTEGER DEFAULT 0,
     longest_streak INTEGER DEFAULT 0,
+    gems INTEGER DEFAULT 0,
     last_active_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -147,3 +148,22 @@ CREATE INDEX IF NOT EXISTS idx_learner_stats_user_topic ON learner_topic_stats(u
 CREATE INDEX IF NOT EXISTS idx_daily_activity_user_date ON daily_activity(user_id, activity_date);
 CREATE INDEX IF NOT EXISTS idx_questions_quiz ON questions(quiz_id);
 CREATE INDEX IF NOT EXISTS idx_quizzes_topic ON quizzes(topic_id);
+
+-- Rewards definition
+CREATE TABLE IF NOT EXISTS rewards (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    cost INTEGER NOT NULL,
+    category TEXT CHECK(category IN ('merch', 'powerup', 'other')),
+    image_url TEXT,
+    is_active BOOLEAN DEFAULT 1
+);
+
+-- User redeemed rewards
+CREATE TABLE IF NOT EXISTS user_rewards (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    reward_id INTEGER NOT NULL REFERENCES rewards(id),
+    redeemed_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

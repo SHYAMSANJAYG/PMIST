@@ -10,6 +10,7 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import BadgesPage from './pages/BadgesPage';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
+import RewardsPage from './pages/RewardsPage';
 import './App.css';
 
 /**
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
             <Route path="/badges" element={<ProtectedRoute><BadgesPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/rewards" element={<ProtectedRoute><RewardsPage /></ProtectedRoute>} />
 
             {/* Admin only */}
             <Route path="/admin" element={<ProtectedRoute adminOnly><AdminPage /></ProtectedRoute>} />
