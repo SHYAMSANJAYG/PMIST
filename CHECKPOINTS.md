@@ -5,7 +5,7 @@ This file provides a simple progress record. Teams should update it at the annou
 ## Checkpoint 1 – Architecture / Setup
 
 - Time: 11:00 AM IST, 26 Sep 2026
-- Current commit: (to be filled after commit)
+- Current commit: 3d2113ce627bff8005b9ae5ff786142c8e99a5e5
 - Problem understanding completed: Yes
 - Architecture prepared: Yes
 - Repository/project structure created: Yes
