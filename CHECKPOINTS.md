@@ -4,13 +4,17 @@ This file provides a simple progress record. Teams should update it at the annou
 
 ## Checkpoint 1 – Architecture / Setup
 
-- Time:
-- Current commit:
-- Problem understanding completed: Yes / No
-- Architecture prepared: Yes / No
-- Repository/project structure created: Yes / No
+- Time: 11:00 AM IST, 26 Sep 2026
+- Current commit: (to be filled after commit)
+- Problem understanding completed: Yes
+- Architecture prepared: Yes
+- Repository/project structure created: Yes
 - Planned modules:
-- Blockers:
+  - **Frontend (React + Vite):** Auth pages, Learner Dashboard, Quiz Engine, Leaderboard, Profile/Badges, Admin Analytics Dashboard
+  - **Backend (Express):** Auth API, Quiz API, Score API, Badge API, Leaderboard API, Analytics API
+  - **Engine Layer:** Adaptive Engine (difficulty adjustment), Scoring Engine (XP + anti-abuse), Badge Engine (condition evaluator), Streak Engine (daily tracking)
+  - **Database (SQLite):** 11 tables — users, topics, quizzes, questions, attempts, responses, badges, user_badges, learner_topic_stats, daily_activity
+- Blockers: `better-sqlite3` requires Visual Studio C++ build tools on Windows — switched to `sql.js` (WASM-based SQLite, zero native dependencies)
 
 ## Checkpoint 2 – Core Development
 

@@ -59,5 +59,11 @@ tmp/
 temp/
 *.tmp
 
-# Local databases / data dumps (remove this line if a small demo DB must be submitted)
+# Local databases / data dumps (regenerated via npm run seed)
+*.db
+*.sqlite
 *.sqlite-journal
+*.db-journal
+
+# Project metadata
+.freebuff/
