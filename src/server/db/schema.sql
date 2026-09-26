@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     longest_streak INTEGER DEFAULT 0,
     total_gems INTEGER DEFAULT 0,
     last_active_date TEXT,
+    last_activity_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

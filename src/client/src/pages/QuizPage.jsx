@@ -35,11 +35,16 @@ export default function QuizPage() {
     api.getTopics().then(setTopics).catch(console.error);
   }, []);
 
-  // Auto-start if topic in URL
+  // Auto-start if topic or quiz in URL
   useEffect(() => {
     const topicId = searchParams.get('topic');
-    if (topicId && phase === 'select') {
-      startQuiz(parseInt(topicId));
+    const quizId = searchParams.get('quiz');
+    if (phase === 'select') {
+      if (quizId) {
+        startSpecificQuiz(parseInt(quizId));
+      } else if (topicId) {
+        startQuiz(parseInt(topicId));
+      }
     }
   }, [searchParams]);
 
@@ -59,6 +64,7 @@ export default function QuizPage() {
       setQuestions(data.questions);
       setCurrentQ(0);
       setAnswers({});
+      setConfidences({});
       setSelectedOption(null);
       setTimer(0);
       setPhase('playing');
@@ -69,9 +75,31 @@ export default function QuizPage() {
     }
   };
 
-  const selectAnswer = (questionId, answer) => {
+  const startSpecificQuiz = async (quizId) => {
+    setLoading(true);
+    try {
+      const data = await api.getQuiz(quizId);
+      setQuiz(data.quiz);
+      setQuestions(data.questions);
+      setCurrentQ(0);
+      setAnswers({});
+      setConfidences({});
+      setSelectedOption(null);
+      setTimer(0);
+      setPhase('playing');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [confidences, setConfidences] = useState({});
+
+  const selectAnswer = (questionId, answer, confidence = 'high') => {
     setSelectedOption(answer);
     setAnswers({ ...answers, [questionId]: answer });
+    setConfidences({ ...confidences, [questionId]: confidence });
   };
 
   const nextQuestion = () => {
@@ -90,6 +118,7 @@ export default function QuizPage() {
       const responses = questions.map((q) => ({
         questionId: q.id,
         answer: answers[q.id] || '',
+        confidence: confidences[q.id] || 'high',
       }));
       const data = await api.submitQuiz({
         quizId: quiz.id,
@@ -210,7 +239,7 @@ export default function QuizPage() {
                 <motion.button
                   key={opt.key}
                   className={`option-btn ${selectedOption === opt.key ? 'selected' : ''}`}
-                  onClick={() => selectAnswer(q.id, opt.key)}
+                  onClick={() => selectAnswer(q.id, opt.key, confidences[q.id] || 'high')}
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                 >
@@ -218,6 +247,26 @@ export default function QuizPage() {
                   <span className="option-text">{opt.text}</span>
                 </motion.button>
               ))}
+            </div>
+
+            <div className="confidence-selection" style={{ marginTop: '20px', display: hasAnswered ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center' }}>
+              <p style={{ marginBottom: '10px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>How confident are you?</p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button 
+                  onClick={() => selectAnswer(q.id, answers[q.id], 'low')}
+                  className={`action-btn ${confidences[q.id] === 'low' ? 'primary' : 'secondary'}`}
+                  style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+                >
+                  Low (50%)
+                </button>
+                <button 
+                  onClick={() => selectAnswer(q.id, answers[q.id], 'high')}
+                  className={`action-btn ${confidences[q.id] === 'high' ? 'primary' : 'secondary'}`}
+                  style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+                >
+                  High (100%)
+                </button>
+              </div>
             </div>
 
             <div className="question-actions">
@@ -290,6 +339,12 @@ export default function QuizPage() {
             </div>
           </div>
 
+          {results.ghostRunBonus > 0 && (
+            <div className="ghost-run-notice" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#a78bfa', padding: '10px', borderRadius: '8px', marginTop: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+              👻 Ghost Run Beaten! New best time! (+{results.ghostRunBonus} XP)
+            </div>
+          )}
+
           {results.xpPenalty > 0 && (
             <div className="penalty-notice">
               ⚠️ Repeat penalty applied: -{results.xpPenalty} XP (anti-abuse scoring)
@@ -330,9 +385,12 @@ export default function QuizPage() {
                     Your answer: <strong>{r.userAnswer}</strong>
                     {!r.isCorrect && <> → Correct: <strong>{r.correctAnswer}</strong></>}
                   </span>
+                  <span className="review-confidence" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    Confidence: {r.confidence === 'high' ? 'High' : 'Low'}
+                  </span>
                   {r.explanation && <span className="review-explain">{r.explanation}</span>}
                 </div>
-                <span className="review-points">{r.isCorrect ? `+${r.points}` : '0'} pts</span>
+                <span className="review-points">{r.points > 0 ? `+${r.points}` : r.points} pts</span>
               </div>
             ))}
           </div>

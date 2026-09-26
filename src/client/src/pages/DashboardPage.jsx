@@ -252,7 +252,7 @@ export default function DashboardPage() {
                         ) : review ? (
                           <div className="review-content">
                             {/* Summary bar */}
-                            <div className="review-summary">
+                            <div className="review-summary" style={{ position: 'relative' }}>
                               <div className="review-summary-stat">
                                 <CheckCircle size={16} color="#10B981" />
                                 <span>{review.summary.correctCount} Correct</span>
@@ -269,6 +269,14 @@ export default function DashboardPage() {
                                 <Star size={16} color="#FBBF24" />
                                 <span>{review.attempt.xpEarned} XP</span>
                               </div>
+                              
+                              <button 
+                                className="action-btn primary" 
+                                style={{ position: 'absolute', right: '0', padding: '6px 12px', fontSize: '0.85rem' }}
+                                onClick={(e) => { e.stopPropagation(); navigate(`/quiz?quiz=${a.quiz_id}`); }}
+                              >
+                                👻 Ghost Run
+                              </button>
                             </div>
 
                             {/* Question-by-question analysis */}
